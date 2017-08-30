@@ -25,6 +25,7 @@ class Categories extends Component {
     return (
       <Segment loading={!isDataLoaded}>
         <Menu fluid vertical>
+          <Menu.Item name="Home"/>
           {categories.map((category) => (
             <Menu.Item key={category.name} name={category.name}/>
           ))}

@@ -1,7 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux'
 import { isLoaded, loadPosts } from '../redux/modules/posts';
-import { Grid, Header } from 'semantic-ui-react'
+import { List } from 'semantic-ui-react'
+
+import Post from './Post';
+
 
 
 class Posts extends Component {
@@ -23,11 +26,11 @@ class Posts extends Component {
     }
 
     return (
-      <Grid centered className="App">
+      <List divided relaxed>
       {posts.map((post) => (
-        <Header key={post.id}>Huge Header</Header>
+        <Post key={post.id} {...post} />
       ))}
-      </Grid>
+    </List>
     );
   }
 }
