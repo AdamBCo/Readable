@@ -5,6 +5,8 @@ import App from './pages/App'
 import registerServiceWorker from './registerServiceWorker'
 
 import {store} from './redux/store'
+import router from './router';
+
 import {Provider} from 'react-redux'
 
 store.subscribe(() => {
@@ -13,7 +15,7 @@ store.subscribe(() => {
 
 ReactDOM.render(
   <Provider store={store} >
-    <App />
+    {router}
   </Provider>, document.getElementById('root')
 )
 registerServiceWorker()

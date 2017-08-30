@@ -7,7 +7,7 @@ import Post from './Post';
 
 
 
-class Posts extends Component {
+class PostList extends Component {
 
   componentWillMount() {
     const { isDataLoaded, loadData } = this.props;
@@ -48,7 +48,7 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-Posts.propTypes = {
+PostList.propTypes = {
   posts: PropTypes.array,
   error: PropTypes.string,
   loading: PropTypes.bool,
@@ -59,4 +59,4 @@ Posts.propTypes = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Posts)
+)(PostList)

@@ -6,7 +6,7 @@ const instance = axios.create({
 });
 
 export const fetchComments = (id) =>
-  instance.get('/comments/:id').then(function (res) {
+  instance.get('/posts/:id/comments').then(function (res) {
     if (res.data.cod && res.data.message) {
       throw new Error(res.data.message);
     } else {

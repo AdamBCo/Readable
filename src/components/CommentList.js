@@ -9,7 +9,7 @@ class CommentList extends Component {
 
     const { comments } = this.props;
 
-    if (!comments) {
+    if (!comments || comments.length == 0) {
       return <p>There are 0 comments.</p>
     }
 

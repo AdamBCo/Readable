@@ -4,7 +4,7 @@ import { Grid, Menu } from 'semantic-ui-react'
 
 // Components
 import Categories from '../components/Categories';
-import Posts from '../components/Posts';
+import PostList from '../components/PostList';
 
 class App extends Component {
   render() {
@@ -14,7 +14,7 @@ class App extends Component {
           <Categories />
         </Grid.Column>
         <Grid.Column width={13}>
-          <Posts />
+          <PostList />
         </Grid.Column>
       </Grid>
     );

@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux'
 import { isLoaded, loadCategories } from '../redux/modules/categories';
 import { Segment, Menu } from 'semantic-ui-react'
+import { Link } from 'react-router-dom'
 
 
 class Categories extends Component {
@@ -26,8 +27,12 @@ class Categories extends Component {
       <Segment loading={!isDataLoaded}>
         <Menu fluid vertical>
           <Menu.Item name="Home"/>
+
           {categories.map((category) => (
-            <Menu.Item key={category.name} name={category.name}/>
+
+            <Menu.Item key={category.name}>
+              <Link to={`/${category.name}`}>{category.name}</Link>
+            </Menu.Item>
           ))}
         </Menu>
       </Segment>

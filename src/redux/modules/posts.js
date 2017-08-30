@@ -50,3 +50,10 @@ export function loadPosts() {
     promise: PostAPI.fetchPosts()
   }
 }
+
+export function loadPostsWithID(id) {
+  return {
+    types: [LOAD_POSTS, LOAD_POSTS_SUCCESS, LOAD_POSTS_FAILURE],
+    promise: PostAPI.fetchPostsWithID(id)
+  }
+}
