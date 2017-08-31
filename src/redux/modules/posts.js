@@ -44,16 +44,17 @@ export function isLoaded(globalState) {
   return globalState.posts && globalState.posts.loaded;
 }
 
-export function loadPosts() {
-  return {
-    types: [LOAD_POSTS, LOAD_POSTS_SUCCESS, LOAD_POSTS_FAILURE],
-    promise: PostAPI.fetchPosts()
-  }
-}
-
 export function loadPostsWithID(id) {
-  return {
-    types: [LOAD_POSTS, LOAD_POSTS_SUCCESS, LOAD_POSTS_FAILURE],
-    promise: PostAPI.fetchPostsWithID(id)
+
+  if (id) {
+    return {
+      types: [LOAD_POSTS, LOAD_POSTS_SUCCESS, LOAD_POSTS_FAILURE],
+      promise: PostAPI.fetchPosts()
+    }
+  } else {
+    return {
+      types: [LOAD_POSTS, LOAD_POSTS_SUCCESS, LOAD_POSTS_FAILURE],
+      promise: PostAPI.fetchPostsWithID(id)
+    }
   }
 }

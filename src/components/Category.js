@@ -1,24 +1,25 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux'
-import { isLoaded, loadPosts } from '../redux/modules/posts';
+import { isLoaded, loadPostsWithID } from '../redux/modules/posts';
 import { List } from 'semantic-ui-react'
 
-import Post from './Post';
+import Post from '../components/Post';
 
-
-
-class PostList extends Component {
+class Category extends Component {
 
   componentWillMount() {
+
+    const category = this.props.match.params.category;
     const { isDataLoaded, loadData } = this.props;
 
     if (!isDataLoaded) {
-      loadData()
+      loadData(category)
     }
   }
 
   render() {
 
+    const category = this.props.match.params.category;
     const { isDataLoaded, posts } = this.props;
 
     if (!posts) {
@@ -27,6 +28,7 @@ class PostList extends Component {
 
     return (
       <List divided relaxed>
+      <h1>{category}</h1>
       {posts.map((post) => (
         <Post key={post.id} {...post} />
       ))}
@@ -44,11 +46,11 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    loadData: () => {dispatch(loadPosts())}
+    loadData: (category) => {dispatch(loadPostsWithID(category))}
   }
 }
 
-PostList.propTypes = {
+Category.propTypes = {
   posts: PropTypes.array,
   error: PropTypes.string,
   loading: PropTypes.bool,
@@ -59,4 +61,4 @@ PostList.propTypes = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(PostList)
+)(Category)
