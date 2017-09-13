@@ -3,9 +3,9 @@ import { connect } from 'react-redux'
 import { isLoaded, loadPostsWithID } from '../redux/modules/posts';
 import { List } from 'semantic-ui-react'
 
-import Post from '../components/Post';
+import PostList from '../components/PostList';
 
-class Category extends Component {
+class CategoryView extends Component {
 
   componentWillMount() {
 
@@ -22,17 +22,17 @@ class Category extends Component {
     const category = this.props.match.params.category;
     const { isDataLoaded, posts } = this.props;
 
-    if (!posts) {
-      return <p>Your search has 0 results.</p>
-    }
+    const currentPosts = posts && posts.filter((post) => {
+      return post.category === category
+    })
 
     return (
-      <List divided relaxed>
-      <h1>{category}</h1>
-      {posts.map((post) => (
-        <Post key={post.id} {...post} />
-      ))}
-    </List>
+      <div>
+        <List divided relaxed>
+          <h1>{category}</h1>
+          <PostList posts={currentPosts} />
+        </List>
+      </div>
     );
   }
 }
@@ -50,7 +50,7 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-Category.propTypes = {
+CategoryView.propTypes = {
   posts: PropTypes.array,
   error: PropTypes.string,
   loading: PropTypes.bool,
@@ -61,4 +61,4 @@ Category.propTypes = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Category)
+)(CategoryView)

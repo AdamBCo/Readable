@@ -6,9 +6,10 @@ import { Grid, Menu } from 'semantic-ui-react'
 
 // Components
 import Categories from '../components/Categories';
-import Category from '../components/Category';
+import CategoryView from '../components/CategoryView';
 
 class App extends Component {
+  
   render() {
     return (
       <BrowserRouter>
@@ -17,7 +18,7 @@ class App extends Component {
             <Categories />
           </Grid.Column>
           <Grid.Column width={13}>
-            <Route path='/:category' component={Category} />
+            <Route path='/:category' component={CategoryView} />
           </Grid.Column>
         </Grid>
       </BrowserRouter>

@@ -5,6 +5,7 @@ import { List } from 'semantic-ui-react'
 import Comment from './Comment';
 
 class CommentList extends Component {
+  
   render() {
 
     const { comments } = this.props;

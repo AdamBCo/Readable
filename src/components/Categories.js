@@ -28,7 +28,6 @@ class Categories extends Component {
         <Menu fluid vertical>
           <Menu.Item>
             <Link to={'/'}>Home</Link>
-
           </Menu.Item>
           {categories.map((category) => (
             <Menu.Item key={category.name}>

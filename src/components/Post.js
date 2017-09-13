@@ -44,18 +44,17 @@ class Post extends Component {
     const { loading, comments } = this.state;
 
     return (
-      <List.Item>
-        <List.Icon name='github' size='large' verticalAlign='middle' />
-        <List.Content>
-          <List.Header as='a'>{title}</List.Header>
-          <List.Description as='a'>{body}</List.Description>
-        </List.Content>
-        <List.Content>
-        <Segment loading={loading}>
+      <Segment loading={loading}>
+        <List.Item>
+          <List.Content>
+            <List.Header as='a'>{title}</List.Header>
+            <List.Description as='a'>{body}</List.Description>
+          </List.Content>
+          <List.Content>
           <CommentList comments={comments}/ >
-        </Segment>
-        </List.Content>
-      </List.Item>
+          </List.Content>
+        </List.Item>
+      </Segment>
     );
   }
 }
