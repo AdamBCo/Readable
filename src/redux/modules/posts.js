@@ -58,3 +58,10 @@ export function loadPostsWithID(id) {
     }
   }
 }
+
+// export function postComment(body, author, parentId) {
+//   return {
+//     types: [ADD_COMMENT, ADD_COMMENT_SUCCESS, ADD_COMMENT_FAILURE],
+//     promise: PostAPI.postComment(body, author, parentId)
+//   }
+// }

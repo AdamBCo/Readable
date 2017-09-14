@@ -1,15 +1,15 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { BrowserRouter, Switch, Route } from 'react-router-dom'
+import { BrowserRouter, Route } from 'react-router-dom'
 
-import { Grid, Menu } from 'semantic-ui-react'
+import { Grid } from 'semantic-ui-react'
 
 // Components
 import Categories from '../components/Categories';
 import CategoryView from '../components/CategoryView';
 
 class App extends Component {
-  
+
   render() {
     return (
       <BrowserRouter>

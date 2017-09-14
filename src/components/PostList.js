@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux'
-import { List } from 'semantic-ui-react'
+import { Item } from 'semantic-ui-react'
 
 import Post from '../components/Post';
 
@@ -10,18 +10,16 @@ class PostList extends Component {
 
     const { posts } = this.props;
 
-    if (!posts || posts.length == 0) {
+    if (!posts || posts.length === 0) {
       return <p>Your search has 0 results.</p>
     }
 
     return (
-      <div>
-        <List divided relaxed>
-          {posts.map((post) => (
-            <Post key={post.id} {...post} />
-          ))}
-        </List>
-      </div>
+      <Item.Group divided>
+        {posts.map((post) => (
+          <Post key={post.id} {...post} />
+        ))}
+      </Item.Group>
     );
   }
 }

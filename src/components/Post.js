@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux'
-import { List, Image, Segment } from 'semantic-ui-react'
+import { List, Item, Image, Segment, Button } from 'semantic-ui-react'
 
 import * as CommentsAPI from '../api/CommentsAPI';
 
@@ -38,23 +38,56 @@ class Post extends Component {
 
   }
 
+  onCommentButtonPressed = (e) => {
+
+    console.log("COOL");
+
+    if (!this.input.value) {
+      return
+    }
+
+    e.preventDefault()
+
+    const { id } = this.props;
+    const comment = this.input.value
+    const author = "Adam"
+
+    console.log(id, comment, author);
+
+    CommentsAPI.postComment(id, author, comment).then((response) => {
+
+      console.log(response);
+    })
+
+  }
+
   render() {
 
-    const { title, body } = this.props;
+    const { id, title, body, author } = this.props;
     const { loading, comments } = this.state;
 
     return (
-      <Segment loading={loading}>
-        <List.Item>
-          <List.Content>
-            <List.Header as='a'>{title}</List.Header>
-            <List.Description as='a'>{body}</List.Description>
-          </List.Content>
-          <List.Content>
-          <CommentList comments={comments}/ >
-          </List.Content>
-        </List.Item>
-      </Segment>
+      <Item>
+
+        <Item.Content>
+          <Item.Header as='a'>{title}</Item.Header>
+          <Item.Meta>Author: {author}</Item.Meta>
+          <Item.Description>
+            {body}
+          </Item.Description>
+          <Item.Extra>
+            <CommentList comments={comments}/ >
+          </Item.Extra>
+          <Item.Extra>
+            <input
+              type='text'
+              placeholder='Comment'
+              ref={(input) => this.input = input}
+            />
+            <Button primary floated='right' onClick={this.onCommentButtonPressed}>Comment</Button>
+          </Item.Extra>
+        </Item.Content>
+      </Item>
     );
   }
 }
