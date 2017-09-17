@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux'
 import { List, Item, Image, Segment, Button } from 'semantic-ui-react'
+import uuid  from 'uuid';
 
 import * as CommentsAPI from '../api/CommentsAPI';
 
@@ -40,8 +41,6 @@ class Post extends Component {
 
   onCommentButtonPressed = (e) => {
 
-    console.log("COOL");
-
     if (!this.input.value) {
       return
     }
@@ -49,12 +48,24 @@ class Post extends Component {
     e.preventDefault()
 
     const { id } = this.props;
-    const comment = this.input.value
-    const author = "Adam"
 
-    console.log(id, comment, author);
+    const comment = {
+      id: uuid(),
+      author: "Adam",
+      body: this.input.value,
+      parentId: id
+    }
 
-    CommentsAPI.postComment(id, author, comment).then((response) => {
+    var comments = this.state.comments.slice(); // copy the array
+    comments.push(comment);
+
+    this.setState({
+      loading: false,
+      comments,
+      error: null
+    })
+
+    CommentsAPI.postComment(comment).then((response) => {
 
       console.log(response);
     })

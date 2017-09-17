@@ -1,9 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux'
 import { isLoaded, loadPostsWithID } from '../redux/modules/posts';
-import { List } from 'semantic-ui-react'
+import { List, Button } from 'semantic-ui-react'
 
 import PostList from '../components/PostList';
+import CreatePost from '../components/CreatePost';
 
 class CategoryView extends Component {
 
@@ -30,6 +31,7 @@ class CategoryView extends Component {
       <div>
         <List divided relaxed>
           <h1>{category}</h1>
+          <CreatePost category={category}/>
           <PostList posts={currentPosts} />
         </List>
       </div>

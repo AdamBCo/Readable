@@ -5,6 +5,10 @@ const LOAD_POSTS = 'LOAD_POSTS'
 const LOAD_POSTS_SUCCESS = 'LOAD_POSTS_SUCCESS'
 const LOAD_POSTS_FAILURE = 'LOAD_POSTS_FAILURE'
 
+const CREATE_POST = 'CREATE_POST'
+const CREATE_POST_SUCCESS = 'CREATE_POST_SUCCESS'
+const CREATE_POST_FAILURE = 'CREATE_POST_FAILURE'
+
 const initialState = {
   loaded: false
 };
@@ -28,6 +32,28 @@ export default function reducer(state = initialState, action = {}) {
         error: null
       }
     case LOAD_POSTS_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        loaded: false,
+        posts: null,
+        error: action.error
+      }
+
+    case CREATE_POST:
+      return {
+        ...state,
+        loading: true
+      }
+    case CREATE_POST_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        loaded: true,
+        posts: action.result,
+        error: null
+      }
+    case CREATE_POST_FAILURE:
       return {
         ...state,
         loading: false,
@@ -59,9 +85,9 @@ export function loadPostsWithID(id) {
   }
 }
 
-// export function postComment(body, author, parentId) {
-//   return {
-//     types: [ADD_COMMENT, ADD_COMMENT_SUCCESS, ADD_COMMENT_FAILURE],
-//     promise: PostAPI.postComment(body, author, parentId)
-//   }
-// }
+export function createPost(post) {
+  return {
+    types: [CREATE_POST, CREATE_POST_SUCCESS, CREATE_POST_FAILURE],
+    promise: PostAPI.createPost(post)
+  }
+}
