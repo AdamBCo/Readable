@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux'
-import { List, Item, Image, Segment, Button } from 'semantic-ui-react'
+import { List, Item, Image, Segment, Button, Label } from 'semantic-ui-react'
 import uuid  from 'uuid';
 
 import * as CommentsAPI from '../api/CommentsAPI';
@@ -79,7 +79,11 @@ class Post extends Component {
 
     return (
       <Item>
-
+        <Button.Group vertical>
+          <Button icon='arrow up'/>
+          <Label>Two</Label>
+          <Button icon='arrow down' />
+        </Button.Group>
         <Item.Content>
           <Item.Header as='a'>{title}</Item.Header>
           <Item.Meta>Author: {author}</Item.Meta>

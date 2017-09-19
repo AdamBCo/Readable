@@ -2,13 +2,19 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import uuid  from 'uuid';
 import { createPost } from '../redux/modules/posts';
+import { Grid, Divider, Header, Icon, Modal, Image, Form, TextArea, Button, Input } from 'semantic-ui-react'
 
-
-import { Grid, Divider, Button, Header, Icon, Modal, Input, Image, Form } from 'semantic-ui-react'
 
 class CreatePost extends Component {
 
-  state = { modalOpen: false }
+  state = {
+    title: '',
+    author: '',
+    body: '',
+    modalOpen: false
+  }
+
+  handleChange = (e, { name, value }) => this.setState({ [name]: value })
 
   handleOpen = (e) => this.setState({
     modalOpen: true
@@ -18,33 +24,33 @@ class CreatePost extends Component {
     modalOpen: false
   })
 
-  onPostButtonPressed = (e) => {
+  onSubmit = (e) => {
 
     e.preventDefault()
 
+    const { title, author, body } = this.state
     const { category } = this.props;
 
     const post = {
       id: uuid(),
       timestamp: Date.now(),
-      title: "Spotter",
-      body: "Nice spot",
-      author: "Simon",
-      category: "udacity"
+      title,
+      body,
+      author,
+      category
     }
-
-    console.log(post);
-
 
     createPost(post);
 
-
+    this.setState({
+      modalOpen: false
+    });
 
   }
 
   render() {
 
-    const { handleSubmit } = this.props;
+    const { title, author, body } = this.state
 
     return (
       <Modal
@@ -58,17 +64,17 @@ class CreatePost extends Component {
         closeIcon='close'
         >
         <Modal.Header>
-          <Header content='Create Post' />
+          Create Post
         </Modal.Header>
         <Modal.Content>
-        <input
-          type='text'
-          placeholder='Create Post...'
-          ref={(input) => this.input = input}
-        />
+          <Form fluid onSubmit={this.onSubmit}>
+            <Form.Input placeholder='Title' name='title' value={title} onChange={this.handleChange} />
+            <Form.Input placeholder='Author' name='author' value={author} onChange={this.handleChange} />
+            <Form.TextArea placeholder='Body' name='body' value={body} onChange={this.handleChange} />
+          </Form>
         </Modal.Content>
         <Modal.Actions>
-        <Button color='blue' onClick={this.onPostButtonPressed}>Create Post</Button>
+          <Button color='blue' onClick={this.onSubmit}>Post</Button>
         </Modal.Actions>
       </Modal>
     );
