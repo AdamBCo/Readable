@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux'
 import { List, Item, Image, Segment, Button, Label } from 'semantic-ui-react'
-import { upVote, downVote } from '../redux/modules/posts';
+import { upVote, downVote, deletePost } from '../redux/modules/posts';
 
 import CommentList from './CommentList';
 import PostDetailView from './PostDetailView';
@@ -24,6 +24,11 @@ class Post extends Component {
     dispatch(downVote(id))
   }
 
+  onDeleteButtonPressed = () => {
+    const { id, dispatch } = this.props;
+    dispatch(deletePost(id))
+  }
+
   render() {
 
     const { id, title, body, author, voteScore } = this.props;
@@ -32,16 +37,15 @@ class Post extends Component {
     return (
       <Item>
         <Item.Content>
-          <Item.Header as='a'>{title}</Item.Header>
+          <PostDetailView {...this.props} comments/>
           <Item.Meta>Author: {author}</Item.Meta>
           <Item.Description>
             {body}
           </Item.Description>
           <Item.Extra>
             <Button icon='arrow up' onClick={this.onUpButtonPressed} />
-            <p>{voteScore}</p>
             <Button icon='arrow down' onClick={this.onDownButtonPressed} />
-            <PostDetailView {...this.props} comments/>
+            <Button icon='trash' onClick={this.onDeleteButtonPressed} />
           </Item.Extra>
         </Item.Content>
       </Item>

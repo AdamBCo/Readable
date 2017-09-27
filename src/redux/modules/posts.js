@@ -17,6 +17,10 @@ const DOWN_VOTE_POST = 'DOWN_VOTE_POST'
 const DOWN_VOTE_POST_SUCCESS = 'DOWN_VOTE_POST_SUCCESS'
 const DOWN_VOTE_POST_FAILURE = 'DOWN_VOTE_POST_FAILURE'
 
+const DELETE_POST = 'DELETE_POST'
+const DELETE_POST_SUCCESS = 'DELETE_POST_SUCCESS'
+const DELETE_POST_FAILURE = 'DELETE_POST_FAILURE'
+
 const initialState = {
   loaded: false
 };
@@ -60,11 +64,15 @@ export default function reducer(state = initialState, action = {}) {
     }
 
     case CREATE_POST_SUCCESS: {
+
+      var posts = state.posts.slice();
+      posts.push(action.result);
+
       return {
         ...state,
         loading: false,
         loaded: true,
-        posts: action.result,
+        posts,
         error: null
       }
     }
@@ -141,6 +149,37 @@ export default function reducer(state = initialState, action = {}) {
       }
     }
 
+
+    case DELETE_POST: {
+
+      var posts = state.posts.filter((post) =>{
+        return post.id != action.id;
+      });
+
+      return {
+        ...state,
+        posts,
+        loading: true
+      }
+    }
+
+    case DELETE_POST_SUCCESS: {
+      return {
+        ...state,
+        loading: false
+      }
+    }
+
+    case DELETE_POST_FAILURE: {
+      return {
+        ...state,
+        loading: false,
+        loaded: false,
+        posts: null,
+        error: action.error
+      }
+    }
+
     default:
       return state
   }
@@ -190,6 +229,18 @@ export function downVote(id) {
 
   return {
     types,
+    promise
+  }
+}
+
+export function deletePost(id) {
+
+  const types = [DELETE_POST, DELETE_POST_SUCCESS, DELETE_POST_FAILURE]
+  const promise = PostAPI.deletePost(id)
+
+  return {
+    types,
+    id,
     promise
   }
 }

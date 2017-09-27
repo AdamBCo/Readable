@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import uuid  from 'uuid';
 import { createPost } from '../redux/modules/posts';
-import { Grid, Divider, Header, Icon, Modal, Image, Form, TextArea, Button, Input } from 'semantic-ui-react'
+import { Grid, Divider, Header, Icon, Modal, Image, Form, TextArea, Button, Input, Item } from 'semantic-ui-react'
 
 import * as CommentsAPI from '../api/CommentsAPI';
 
@@ -14,7 +14,8 @@ class PostDetailView extends Component {
     loading: true,
     comments: null,
     error: null,
-    comment: null
+    comment: null,
+    username: null
   }
 
   handleChange = (e, { name, value }) => this.setState({ [name]: value })
@@ -55,12 +56,11 @@ class PostDetailView extends Component {
     e.preventDefault()
 
     const { id } = this.props;
-    const { comment } = this.state;
-
+    const { comment, username } = this.state;
 
     const newComment = {
       id: uuid(),
-      author: "Adam",
+      author: username,
       body: comment,
       parentId: id
     }
@@ -71,7 +71,9 @@ class PostDetailView extends Component {
     this.setState({
       loading: false,
       comments,
-      error: null
+      error: null,
+      username: null,
+      comment: null
     })
 
     CommentsAPI.postComment(newComment)
@@ -81,14 +83,12 @@ class PostDetailView extends Component {
   render() {
 
     const { id, title, body, author } = this.props;
-    const { loading, comments, comment } = this.state;
+    const { loading, comments, comment, username } = this.state;
 
     return (
       <Modal
         trigger={
-          <Button floated='right' icon labelPosition='left' primary size='small' onClick={ this.handleOpen }>
-            <Icon name='plus' /> New
-          </Button>
+          <Item.Header as='a'>{title}</Item.Header>
         }
         open={this.state.modalOpen}
         onClose={this.handleClose}
@@ -103,7 +103,8 @@ class PostDetailView extends Component {
         <Modal.Content scrolling>
           <CommentList comments={comments}/ >
           <Form fluid onSubmit={this.onSubmit}>
-            <Form.Input placeholder='Comment' name='comment' value={comment} onChange={this.handleChange} />
+            <Form.Input placeholder='Username' name='username' value={username || ""} onChange={this.handleChange} />
+            <Form.Input placeholder='Comment' name='comment' value={comment || ""} onChange={this.handleChange} />
             <Form.Button content="Submit" />
           </Form>
         </Modal.Content>
@@ -112,12 +113,4 @@ class PostDetailView extends Component {
   }
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    createPost: (post) => {dispatch(createPost(post))}
-  }
-}
-
-export default connect(
-  mapDispatchToProps
-)(PostDetailView)
+export default connect()(PostDetailView)

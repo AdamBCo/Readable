@@ -18,6 +18,7 @@ class App extends Component {
             <Categories />
           </Grid.Column>
           <Grid.Column width={13}>
+            <Route exact={true} path='/' component={CategoryView} />
             <Route path='/:category' component={CategoryView} />
           </Grid.Column>
         </Grid>

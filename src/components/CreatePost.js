@@ -11,6 +11,7 @@ class CreatePost extends Component {
     title: '',
     author: '',
     body: '',
+    category: '',
     modalOpen: false
   }
 
@@ -29,7 +30,7 @@ class CreatePost extends Component {
     e.preventDefault()
 
     const { title, author, body } = this.state
-    const { category } = this.props;
+    const { category, dispatch } = this.props;
 
     const post = {
       id: uuid(),
@@ -40,7 +41,7 @@ class CreatePost extends Component {
       category
     }
 
-    createPost(post);
+    dispatch(createPost(post));
 
     this.setState({
       modalOpen: false
@@ -67,7 +68,7 @@ class CreatePost extends Component {
           Create Post
         </Modal.Header>
         <Modal.Content>
-          <Form fluid onSubmit={this.onSubmit}>
+          <Form onSubmit={this.onSubmit}>
             <Form.Input placeholder='Title' name='title' value={title} onChange={this.handleChange} />
             <Form.Input placeholder='Author' name='author' value={author} onChange={this.handleChange} />
             <Form.TextArea placeholder='Body' name='body' value={body} onChange={this.handleChange} />
@@ -81,12 +82,4 @@ class CreatePost extends Component {
   }
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    createPost: (post) => {dispatch(createPost(post))}
-  }
-}
-
-export default connect(
-  mapDispatchToProps
-)(CreatePost)
+export default connect()(CreatePost)
