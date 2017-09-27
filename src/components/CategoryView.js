@@ -28,7 +28,7 @@ class CategoryView extends Component {
     })
 
     const sortedPosts = currentPosts && currentPosts.sort(function(a, b){
-      return a.voteScore > b.voteScore;
+      return a.voteScore < b.voteScore;
     });
 
     return (

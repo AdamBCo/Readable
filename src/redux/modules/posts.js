@@ -88,11 +88,8 @@ export default function reducer(state = initialState, action = {}) {
 
     case UP_VOTE_POST_SUCCESS: {
 
-      console.log(action);
-      console.log("COOL");
-
       let posts = state.posts.map((post) => {
-        if (post.id === action.id) {
+        if (post.id === action.result.id) {
           post.voteScore = post.voteScore + 1;
           return post;
         } else {
@@ -114,32 +111,27 @@ export default function reducer(state = initialState, action = {}) {
     }
 
     case DOWN_VOTE_POST: {
-
-      let posts = state.posts.map((post) => {
-        if (post.id === action.id) {
-          post.voteScore = post.voteScore - 1;
-          return post;
-        } else {
-          return post;
-        }
-      });
       return {
-      ...state,
-      posts
+      ...state
       }
-
     }
 
     case DOWN_VOTE_POST_SUCCESS: {
 
       let posts = state.posts.map((post) => {
-        if (post.id === action.id) {
+        if (post.id === action.result.id) {
           post.voteScore = post.voteScore - 1;
           return post;
         } else {
           return post;
         }
       });
+
+      return {
+      ...state,
+      loading: false,
+      posts
+      }
 
     }
 

@@ -26,7 +26,7 @@ class Post extends Component {
 
   render() {
 
-    const { id, title, body, author } = this.props;
+    const { id, title, body, author, voteScore } = this.props;
     const { loading, comments } = this.state;
 
     return (
@@ -39,6 +39,7 @@ class Post extends Component {
           </Item.Description>
           <Item.Extra>
             <Button icon='arrow up' onClick={this.onUpButtonPressed} />
+            <p>{voteScore}</p>
             <Button icon='arrow down' onClick={this.onDownButtonPressed} />
             <PostDetailView {...this.props} comments/>
           </Item.Extra>
