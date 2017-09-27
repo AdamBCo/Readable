@@ -14,8 +14,6 @@ export default function clientMiddleware(store) {
 
     dispatch({ ...rest, type: REQUEST });
 
-    console.log(types);
-
     return promise.then(
         (result) => dispatch({ ...rest, result, type: SUCCESS }),
         (error) => dispatch({ ...rest, error, type: FAILURE })

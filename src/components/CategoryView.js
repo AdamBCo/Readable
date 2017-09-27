@@ -23,7 +23,11 @@ class CategoryView extends Component {
     const category = this.props.match.params.category;
     const { isDataLoaded, posts } = this.props;
 
-    var sortedPosts = posts && posts.sort(function(a, b){
+    var filteredPosts = posts && posts.filter((post) => {
+      return post.deleted === false
+    })
+
+    var sortedPosts = filteredPosts && filteredPosts.sort(function(a, b){
       return a.voteScore < b.voteScore;
     });
 

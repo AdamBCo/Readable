@@ -10,17 +10,21 @@ class CommentList extends Component {
 
   render() {
 
-    const { comments } = this.props;
+    const { comments, postID } = this.props;
 
     if (!comments || comments.length === 0) {
       return <p>There are 0 comments.</p>
     }
 
+    var filteredComments = comments.filter((comment) => {
+      return comment.deleted === false
+    })
+
     return (
       <div>
         <List>
-          {comments.map((comment) => (
-            <Comment key={comment.id} {...comment} />
+          {filteredComments.map((comment) => (
+            <Comment key={comment.id} {...comment} postID={postID}/>
           ))}
         </List>
       </div>
