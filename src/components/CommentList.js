@@ -20,10 +20,14 @@ class CommentList extends Component {
       return comment.deleted === false
     })
 
+    var sortedComments = filteredComments && filteredComments.sort(function(a, b){
+      return a.voteScore < b.voteScore;
+    });
+
     return (
       <div>
         <List>
-          {filteredComments.map((comment) => (
+          {sortedComments.map((comment) => (
             <Comment key={comment.id} {...comment} postID={postID}/>
           ))}
         </List>

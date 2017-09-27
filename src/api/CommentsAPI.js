@@ -44,3 +44,33 @@ export const deleteComment = (id) =>
     console.log(res);
     throw new Error(res.data.message);
   });
+
+export const upVoteComment = (id) =>
+  instance.post('/comments/' + id, {
+    option: "upVote"
+  }).then(function (res) {
+    if (res.data.cod && res.data.message) {
+      throw new Error(res.data.message);
+    } else {
+      console.log(res.data);
+      return res.data;
+    }
+  }, function (res) {
+    console.log(res);
+    throw new Error(res.data.message);
+  });
+
+export const downVoteComment = (id) =>
+  instance.post('/comments/' + id, {
+    option: "downVote"
+  }).then(function (res) {
+    if (res.data.cod && res.data.message) {
+      throw new Error(res.data.message);
+    } else {
+      console.log(res.data);
+      return res.data;
+    }
+  }, function (res) {
+    console.log(res);
+    throw new Error(res.data.message);
+  });

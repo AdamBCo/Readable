@@ -5,9 +5,21 @@ const LOAD_COMMENTS = 'LOAD_COMMENTS'
 const LOAD_COMMENTS_SUCCESS = 'LOAD_COMMENTS_SUCCESS'
 const LOAD_COMMENTS_FAILURE = 'LOAD_COMMENTS_FAILURE'
 
+const POST_COMMENT = 'POST_COMMENT'
+const POST_COMMENT_SUCCESS = 'POST_COMMENT_SUCCESS'
+const POST_COMMENT_FAILURE = 'POST_COMMENT_FAILURE'
+
 const DELETE_COMMENT = 'DELETE_COMMENT'
 const DELETE_COMMENT_SUCCESS = 'DELETE_COMMENT_SUCCESS'
 const DELETE_COMMENT_FAILURE = 'DELETE_COMMENT_FAILURE'
+
+const UP_VOTE_COMMENT = 'UP_VOTE_COMMENT'
+const UP_VOTE_COMMENT_SUCCESS = 'UP_VOTE_COMMENT_SUCCESS'
+const UP_VOTE_COMMENT_FAILURE = 'UP_VOTE_COMMENT_FAILURE'
+
+const DOWN_VOTE_COMMENT = 'DOWN_VOTE_COMMENT'
+const DOWN_VOTE_COMMENT_SUCCESS = 'DOWN_VOTE_COMMENT_SUCCESS'
+const DOWN_VOTE_COMMENT_FAILURE = 'DOWN_VOTE_COMMENT_FAILURE'
 
 const initialState = {
   loaded: false
@@ -38,6 +50,94 @@ export default function reducer(state = initialState, action = {}) {
         loaded: false,
         comments: null,
         error: action.error
+      }
+
+    case POST_COMMENT: {
+      return {
+        ...state,
+        loading: true
+      }
+    }
+
+    case POST_COMMENT_SUCCESS: {
+
+      var comments = state.comments.slice();
+      comments.push(action.result);
+
+      return {
+        ...state,
+        loading: false,
+        loaded: true,
+        comments,
+        error: null
+      }
+    }
+
+    case POST_COMMENT_FAILURE: {
+      return {
+        ...state,
+        loading: false,
+        loaded: false,
+        comments: null,
+        error: action.error
+      }
+    }
+
+    case UP_VOTE_COMMENT:
+      return {
+        ...state,
+        loading: true
+      }
+
+    case UP_VOTE_COMMENT_SUCCESS: {
+
+      let comments = state.comments.map((comment) => {
+        if (comment.id === action.result.id) {
+          comment.voteScore = comment.voteScore + 1;
+          return comment;
+        } else {
+          return comment;
+        }
+      });
+
+      return {
+        ...state,
+        loading: false,
+        comments
+      }
+    }
+
+    case UP_VOTE_COMMENT_FAILURE:
+      return {
+        ...state
+      }
+
+    case DOWN_VOTE_COMMENT:
+      return {
+        ...state
+      }
+
+    case DOWN_VOTE_COMMENT_SUCCESS: {
+
+      let comments = state.comments.map((comment) => {
+        if (comment.id === action.result.id) {
+            comment.voteScore = comment.voteScore - 1;
+            return comment;
+          } else {
+            return comment;
+          }
+        });
+
+        return {
+          ...state,
+          loading: false,
+          comments
+        }
+      }
+
+    case DOWN_VOTE_COMMENT_FAILURE:
+      return {
+        ...state
       }
 
     case DELETE_COMMENT:
@@ -80,9 +180,30 @@ export function fetchComments(id) {
   }
 }
 
+export function postComment(comment) {
+  return {
+    types: [POST_COMMENT, POST_COMMENT_SUCCESS, POST_COMMENT_FAILURE],
+    promise: CommentsAPI.postComment(comment)
+  }
+}
+
 export function deleteComment(id) {
   return {
     types: [DELETE_COMMENT, DELETE_COMMENT_SUCCESS, DELETE_COMMENT_FAILURE],
     promise: CommentsAPI.deleteComment(id)
+  }
+}
+
+export function upVoteComment(id) {
+  return {
+    types: [UP_VOTE_COMMENT, UP_VOTE_COMMENT_SUCCESS, UP_VOTE_COMMENT_FAILURE],
+    promise: CommentsAPI.upVoteComment(id)
+  }
+}
+
+export function downVoteComment(id) {
+  return {
+    types: [DOWN_VOTE_COMMENT, DOWN_VOTE_COMMENT_SUCCESS, DOWN_VOTE_COMMENT_FAILURE],
+    promise: CommentsAPI.downVoteComment(id)
   }
 }

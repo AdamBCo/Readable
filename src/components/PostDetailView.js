@@ -1,11 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import uuid  from 'uuid';
-import { fetchComments } from '../redux/modules/comments';
+import { fetchComments, postComment } from '../redux/modules/comments';
 import { Grid, Divider, Header, Icon, Modal, Image, Form, TextArea, Button, Input, Item } from 'semantic-ui-react'
-
-import * as CommentsAPI from '../api/CommentsAPI';
-
 import CommentList from './CommentList';
 
 class PostDetailView extends Component {
@@ -25,8 +22,6 @@ class PostDetailView extends Component {
     const { id, loadData } = this.props;
     loadData(id);
 
-    console.log("DATA");
-
     this.setState({
       modalOpen: true
     })
@@ -39,7 +34,7 @@ class PostDetailView extends Component {
   onSubmit = (e) => {
     e.preventDefault()
 
-    const { id } = this.props;
+    const { id, dispatch } = this.props;
     const { comment, username } = this.state;
 
     const newComment = {
@@ -49,18 +44,13 @@ class PostDetailView extends Component {
       parentId: id
     }
 
-    var comments = this.state.comments.slice(); // copy the array
-    comments.push(newComment);
+    dispatch(postComment(newComment))
 
     this.setState({
-      loading: false,
-      comments,
-      error: null,
+      ...this.state,
       username: null,
       comment: null
     })
-
-    CommentsAPI.postComment(newComment)
 
   }
 
@@ -99,8 +89,8 @@ class PostDetailView extends Component {
 
 const mapStateToProps = (state) => ({
   comments: state.comments.comments,
-  error: state.posts.error,
-  loading: state.posts.loading
+  error: state.comments.error,
+  loading: state.comments.loading
 });
 
 const mapDispatchToProps = (dispatch) => {
