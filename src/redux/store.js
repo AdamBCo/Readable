@@ -1,5 +1,5 @@
 import { createStore, applyMiddleware, compose } from 'redux';
-import createMiddleware from './middleware/clientMiddleware';
+import clientMiddleware from './middleware/clientMiddleware';
 
 import thunk from 'redux-thunk';
 import reducer from './reducer';
@@ -7,7 +7,7 @@ import reducer from './reducer';
 const middlewares = [
   applyMiddleware(
     thunk,
-    createMiddleware
+    clientMiddleware
   )
 ];
 

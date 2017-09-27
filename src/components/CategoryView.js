@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux'
-import { isLoaded, loadPostsWithID } from '../redux/modules/posts';
+import { isLoaded, fetchPosts } from '../redux/modules/posts';
 import { List, Button } from 'semantic-ui-react'
 
 import PostList from '../components/PostList';
@@ -27,12 +27,16 @@ class CategoryView extends Component {
       return post.category === category
     })
 
+    const sortedPosts = currentPosts && currentPosts.sort(function(a, b){
+      return a.voteScore > b.voteScore;
+    });
+
     return (
       <div>
         <List divided relaxed>
           <h1>{category}</h1>
           <CreatePost category={category}/>
-          <PostList posts={currentPosts} />
+          <PostList posts={sortedPosts} />
         </List>
       </div>
     );
@@ -48,7 +52,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    loadData: (category) => {dispatch(loadPostsWithID(category))}
+    loadData: (category) => {dispatch(fetchPosts())}
   }
 }
 

@@ -1,6 +1,7 @@
-export default function promiseMiddleware(store) {
+export default function clientMiddleware(store) {
 
   return next => action => {
+
     const { promise, types, ...rest } = action;
 
     if (!promise) {
@@ -12,6 +13,8 @@ export default function promiseMiddleware(store) {
     const [REQUEST, SUCCESS, FAILURE] = types;
 
     dispatch({ ...rest, type: REQUEST });
+
+    console.log(types);
 
     return promise.then(
         (result) => dispatch({ ...rest, result, type: SUCCESS }),

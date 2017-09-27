@@ -1,11 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux'
 import { List, Item, Image, Segment, Button, Label } from 'semantic-ui-react'
-import uuid  from 'uuid';
-
-import * as CommentsAPI from '../api/CommentsAPI';
+import { upVote, downVote } from '../redux/modules/posts';
 
 import CommentList from './CommentList';
+import PostDetailView from './PostDetailView';
 
 class Post extends Component {
 
@@ -15,61 +14,14 @@ class Post extends Component {
     error: null
   }
 
-  componentWillMount() {
-
-    const { id } = this.props;
-
-    CommentsAPI.fetchComments(id).then((response) => {
-
-      this.setState({
-        loading: false,
-        comments: response,
-        error: null
-      })
-
-    }, (error) => {
-
-      this.setState({
-        loading: false,
-        comments: null,
-        error: error
-      })
-
-    })
-
+  onUpButtonPressed = () => {
+    const { id, dispatch } = this.props;
+    dispatch(upVote(id))
   }
 
-  onCommentButtonPressed = (e) => {
-
-    if (!this.input.value) {
-      return
-    }
-
-    e.preventDefault()
-
-    const { id } = this.props;
-
-    const comment = {
-      id: uuid(),
-      author: "Adam",
-      body: this.input.value,
-      parentId: id
-    }
-
-    var comments = this.state.comments.slice(); // copy the array
-    comments.push(comment);
-
-    this.setState({
-      loading: false,
-      comments,
-      error: null
-    })
-
-    CommentsAPI.postComment(comment).then((response) => {
-
-      console.log(response);
-    })
-
+  onDownButtonPressed = () => {
+    const { id, dispatch } = this.props;
+    dispatch(downVote(id))
   }
 
   render() {
@@ -79,11 +31,6 @@ class Post extends Component {
 
     return (
       <Item>
-        <Button.Group vertical>
-          <Button icon='arrow up'/>
-          <Label>Two</Label>
-          <Button icon='arrow down' />
-        </Button.Group>
         <Item.Content>
           <Item.Header as='a'>{title}</Item.Header>
           <Item.Meta>Author: {author}</Item.Meta>
@@ -91,15 +38,9 @@ class Post extends Component {
             {body}
           </Item.Description>
           <Item.Extra>
-            <CommentList comments={comments}/ >
-          </Item.Extra>
-          <Item.Extra>
-            <input
-              type='text'
-              placeholder='Comment'
-              ref={(input) => this.input = input}
-            />
-            <Button primary floated='right' onClick={this.onCommentButtonPressed}>Comment</Button>
+            <Button icon='arrow up' onClick={this.onUpButtonPressed} />
+            <Button icon='arrow down' onClick={this.onDownButtonPressed} />
+            <PostDetailView {...this.props} comments/>
           </Item.Extra>
         </Item.Content>
       </Item>
