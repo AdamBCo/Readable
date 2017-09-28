@@ -18,16 +18,14 @@ export const fetchPosts = () =>
     throw new Error(res.data.message);
   });
 
-export const fetchPostsWithID = (category) =>
-  instance.get('/:category/posts').then(function (res) {
+export const loadPostWithID = (id) =>
+  instance.get('/posts/' + id).then(function (res) {
     if (res.data.cod && res.data.message) {
       throw new Error(res.data.message);
     } else {
-      console.log(res.data);
       return res.data;
     }
   }, function (res) {
-    console.log(res);
     throw new Error(res.data.message);
   });
 

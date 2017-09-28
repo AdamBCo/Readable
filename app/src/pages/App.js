@@ -18,7 +18,7 @@ class App extends Component {
           <Grid.Column width={16}>
             <Route exact={true} path='/' component={CategoriesView} />
             <Route exact={true} path='/:category' component={CategoriesView} />
-            <Route exact={true} path='/:category/:id' component={PostView} />
+            <Route exact={true} path='/:category/:id' component={PostView} cool={"nice"}/>
           </Grid.Column>
         </Grid>
       </BrowserRouter>

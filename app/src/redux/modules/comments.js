@@ -1,6 +1,12 @@
 import * as CommentsAPI from '../../api/CommentsAPI';
+import * as PostAPI from '../../api/PostAPI';
 
 // Actions
+
+const LOAD_POST = 'LOAD_POST'
+const LOAD_POST_SUCCESS = 'LOAD_POST_SUCCESS'
+const LOAD_POST_FAILURE = 'LOAD_POST_FAILURE'
+
 const LOAD_COMMENTS = 'LOAD_COMMENTS'
 const LOAD_COMMENTS_SUCCESS = 'LOAD_COMMENTS_SUCCESS'
 const LOAD_COMMENTS_FAILURE = 'LOAD_COMMENTS_FAILURE'
@@ -22,7 +28,9 @@ const DOWN_VOTE_COMMENT_SUCCESS = 'DOWN_VOTE_COMMENT_SUCCESS'
 const DOWN_VOTE_COMMENT_FAILURE = 'DOWN_VOTE_COMMENT_FAILURE'
 
 const initialState = {
-  loaded: false
+  loaded: false,
+  title: "",
+  body: ""
 };
 
 // Reducer
@@ -143,7 +151,7 @@ export default function reducer(state = initialState, action = {}) {
     case DELETE_COMMENT:
 
       var comments = state.comments.filter((comment) =>{
-        return comment.id != action.id;
+        return comment.id !== action.id;
       });
 
       return {
@@ -157,7 +165,6 @@ export default function reducer(state = initialState, action = {}) {
         ...state,
         loading: false,
         loaded: true,
-        comments: action.result,
         error: null
       }
     case DELETE_COMMENT_FAILURE:
@@ -165,7 +172,32 @@ export default function reducer(state = initialState, action = {}) {
         ...state,
         loading: false,
         loaded: false,
-        comments: null,
+        error: action.error
+      }
+
+
+    case LOAD_POST:
+      return {
+        ...state,
+        comments,
+        loading: true
+      }
+
+    case LOAD_POST_SUCCESS:
+
+      return {
+        ...state,
+        title: action.result.title,
+        body: action.result.body,
+        loading: false,
+        loaded: true,
+        error: null
+      }
+    case LOAD_POST_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        loaded: false,
         error: action.error
       }
     default:
@@ -189,6 +221,7 @@ export function postComment(comment) {
 
 export function deleteComment(id) {
   return {
+    id,
     types: [DELETE_COMMENT, DELETE_COMMENT_SUCCESS, DELETE_COMMENT_FAILURE],
     promise: CommentsAPI.deleteComment(id)
   }
@@ -205,5 +238,12 @@ export function downVoteComment(id) {
   return {
     types: [DOWN_VOTE_COMMENT, DOWN_VOTE_COMMENT_SUCCESS, DOWN_VOTE_COMMENT_FAILURE],
     promise: CommentsAPI.downVoteComment(id)
+  }
+}
+
+export function loadPost(id) {
+  return {
+    types: [LOAD_POST, LOAD_POST_SUCCESS, LOAD_POST_FAILURE],
+    promise: PostAPI.loadPostWithID(id)
   }
 }
