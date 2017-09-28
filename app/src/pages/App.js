@@ -5,8 +5,9 @@ import { BrowserRouter, Route } from 'react-router-dom'
 import { Grid } from 'semantic-ui-react'
 
 // Components
-import Categories from '../components/Categories';
-import CategoryView from '../components/CategoryView';
+import CategoriesView from '../pages/CategoriesView';
+import PostView from '../pages/PostView';
+
 
 class App extends Component {
 
@@ -14,12 +15,10 @@ class App extends Component {
     return (
       <BrowserRouter>
         <Grid>
-          <Grid.Column width={2}>
-            <Categories />
-          </Grid.Column>
-          <Grid.Column width={13}>
-            <Route exact={true} path='/' component={CategoryView} />
-            <Route path='/:category' component={CategoryView} />
+          <Grid.Column width={16}>
+            <Route exact={true} path='/' component={CategoriesView} />
+            <Route exact={true} path='/:category' component={CategoriesView} />
+            <Route exact={true} path='/:category/:id' component={PostView} />
           </Grid.Column>
         </Grid>
       </BrowserRouter>

@@ -5,7 +5,7 @@ import { Segment, Menu } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 
 
-class Categories extends Component {
+class CategoryList extends Component {
 
   componentWillMount() {
     const { isDataLoaded, loadData } = this.props;
@@ -53,7 +53,7 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-Categories.propTypes = {
+CategoryList.propTypes = {
   categories: PropTypes.array,
   error: PropTypes.string,
   loading: PropTypes.bool,
@@ -64,4 +64,4 @@ Categories.propTypes = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Categories)
+)(CategoryList)

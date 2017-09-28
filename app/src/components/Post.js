@@ -4,7 +4,7 @@ import { List, Item, Image, Segment, Button, Label } from 'semantic-ui-react'
 import { upVote, downVote, deletePost } from '../redux/modules/posts';
 
 import CommentList from './CommentList';
-import PostDetailView from './PostDetailView';
+import { Link } from 'react-router-dom'
 
 class Post extends Component {
 
@@ -31,21 +31,22 @@ class Post extends Component {
 
   render() {
 
-    const { id, title, body, author, voteScore } = this.props;
+    const { id, title, body, author, voteScore, category } = this.props;
     const { loading, comments } = this.state;
 
     return (
       <Item>
         <Item.Content>
-          <PostDetailView {...this.props} comments/>
+          <Link to={`/${category}/${id}`}>{title}</Link>
           <Item.Meta>Author: {author}</Item.Meta>
           <Item.Description>
             {body}
           </Item.Description>
           <Item.Extra>
             <Button icon='arrow up' onClick={this.onUpButtonPressed} />
+            <Label>{voteScore}</Label>
             <Button icon='arrow down' onClick={this.onDownButtonPressed} />
-            <Button icon='trash' onClick={this.onDeleteButtonPressed} />
+            <Button icon='trash'  floated='right'onClick={this.onDeleteButtonPressed} />
           </Item.Extra>
         </Item.Content>
       </Item>
