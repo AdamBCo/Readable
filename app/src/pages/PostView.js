@@ -11,7 +11,6 @@ class PostView extends Component {
     loading: true,
     comments: null,
     error: null,
-    comment: null,
     username: null
   }
 
@@ -23,7 +22,7 @@ class PostView extends Component {
     const { loadData, loadPost } = this.props;
 
     loadData(id);
-    loadPost(id)
+    loadPost(id);
 
   }
 
@@ -31,7 +30,8 @@ class PostView extends Component {
   onSubmit = (e) => {
     e.preventDefault()
 
-    const { id, postComment } = this.props;
+    const id = this.props.match.params.id;
+    const { postComment } = this.props;
     const { comment, username } = this.state;
 
     const newComment = {
@@ -40,6 +40,8 @@ class PostView extends Component {
       body: comment,
       parentId: id
     }
+
+    console.log(newComment);
 
     postComment(newComment)
 

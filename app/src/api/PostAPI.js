@@ -42,6 +42,22 @@ export const createPost = (post) =>
     throw new Error(res.data.message);
   });
 
+export const updatePost = (id, title, body) =>
+  instance.put('/posts/' + id, {
+    title,
+    body
+  }).then(function (res) {
+    if (res.data.cod && res.data.message) {
+      throw new Error(res.data.message);
+    } else {
+      console.log(res.data);
+      return res.data;
+    }
+  }, function (res) {
+    console.log(res);
+    throw new Error(res.data.message);
+  });
+
 export const deletePost = (id) =>
   instance.delete('/posts/' + id).then(function (res) {
     if (res.data.cod && res.data.message) {

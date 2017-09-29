@@ -9,6 +9,10 @@ const CREATE_POST = 'CREATE_POST'
 const CREATE_POST_SUCCESS = 'CREATE_POST_SUCCESS'
 const CREATE_POST_FAILURE = 'CREATE_POST_FAILURE'
 
+const UPDATE_POST = 'UPDATE_POST'
+const UPDATE_POST_SUCCESS = 'UPDATE_POST_SUCCESS'
+const UPDATE_POST_FAILURE = 'UPDATE_POST_FAILURE'
+
 const UP_VOTE_POST = 'UP_VOTE_POST'
 const UP_VOTE_POST_SUCCESS = 'UP_VOTE_POST_SUCCESS'
 const UP_VOTE_POST_FAILURE = 'UP_VOTE_POST_FAILURE'
@@ -180,6 +184,40 @@ export default function reducer(state = initialState, action = {}) {
       }
     }
 
+
+    case UPDATE_POST: {
+
+      let posts = state.posts.map((post) => {
+        if (post.id === action.id) {
+          post.title = action.title;
+          post.body = action.body;
+          return post;
+        } else {
+          return post;
+        }
+      });
+
+      return {
+        ...state,
+        posts,
+        loading: true
+      }
+    }
+
+    case UPDATE_POST_SUCCESS: {
+
+      return {
+      ...state
+      }
+
+    }
+
+    case UPDATE_POST_FAILURE: {
+      return {
+        ...state
+      }
+    }
+
     default:
       return state
   }
@@ -241,6 +279,20 @@ export function deletePost(id) {
   return {
     types,
     id,
+    promise
+  }
+}
+
+export function updatePost(id, title, body) {
+
+  const types = [UPDATE_POST, UPDATE_POST_SUCCESS, UPDATE_POST_FAILURE]
+  const promise = PostAPI.updatePost(id, title, body)
+
+  return {
+    types,
+    id,
+    title,
+    body,
     promise
   }
 }

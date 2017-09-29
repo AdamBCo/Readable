@@ -11,7 +11,7 @@ export const fetchComments = (id) =>
     if (res.data.cod && res.data.message) {
       throw new Error(res.data.message);
     } else {
-      console.log(res.data);
+      console.log(res);
       return res.data;
     }
   }, function (res) {
@@ -21,6 +21,21 @@ export const fetchComments = (id) =>
 
 export const postComment = (comment) =>
   instance.post('/comments', comment).then(function (res) {
+    if (res.data.cod && res.data.message) {
+      throw new Error(res.data.message);
+    } else {
+      console.log(res);
+      return res.data;
+    }
+  }, function (res) {
+    console.log(res);
+    throw new Error(res.data.message);
+  });
+
+export const updateComment = (id, body) =>
+  instance.put('/comments/' + id, {
+    body
+  }).then(function (res) {
     if (res.data.cod && res.data.message) {
       throw new Error(res.data.message);
     } else {

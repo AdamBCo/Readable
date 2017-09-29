@@ -15,6 +15,10 @@ const POST_COMMENT = 'POST_COMMENT'
 const POST_COMMENT_SUCCESS = 'POST_COMMENT_SUCCESS'
 const POST_COMMENT_FAILURE = 'POST_COMMENT_FAILURE'
 
+const UPDATE_COMMENT = 'UPDATE_COMMENT'
+const UPDATE_COMMENT_SUCCESS = 'UPDATE_COMMENT_SUCCESS'
+const UPDATE_COMMENT_FAILURE = 'UPDATE_COMMENT_FAILURE'
+
 const DELETE_COMMENT = 'DELETE_COMMENT'
 const DELETE_COMMENT_SUCCESS = 'DELETE_COMMENT_SUCCESS'
 const DELETE_COMMENT_FAILURE = 'DELETE_COMMENT_FAILURE'
@@ -200,6 +204,38 @@ export default function reducer(state = initialState, action = {}) {
         loaded: false,
         error: action.error
       }
+
+    case UPDATE_COMMENT: {
+
+      let comments = state.comment.map((comment) => {
+        if (comment.id === action.id) {
+          comment.body = action.body;
+          return comment;
+        } else {
+          return comment;
+        }
+      });
+
+      return {
+        ...state,
+        comments,
+        loading: true
+      }
+    }
+
+    case UPDATE_COMMENT_SUCCESS: {
+
+      return {
+      ...state
+      }
+
+    }
+
+    case UPDATE_COMMENT_FAILURE: {
+      return {
+        ...state
+      }
+    }
     default:
       return state
   }
@@ -245,5 +281,18 @@ export function loadPost(id) {
   return {
     types: [LOAD_POST, LOAD_POST_SUCCESS, LOAD_POST_FAILURE],
     promise: PostAPI.loadPostWithID(id)
+  }
+}
+
+export function updateComment(id, body) {
+
+  const types = [UPDATE_COMMENT, UPDATE_COMMENT_SUCCESS, UPDATE_COMMENT_FAILURE]
+  const promise = CommentsAPI.updateComment(id, body)
+
+  return {
+    types,
+    id,
+    body,
+    promise
   }
 }
