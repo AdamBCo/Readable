@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { List, Button, Label } from 'semantic-ui-react';
+import { List, Button, Label, Input } from 'semantic-ui-react';
 import { deleteComment, upVoteComment, downVoteComment, updateComment } from '../redux/modules/comments';
 
 class Comment extends Component {
@@ -62,8 +62,16 @@ class Comment extends Component {
           <Button icon='trash' onClick={this.onDeleteButtonPressed} />
         </List.Content>
         <List.Content>
-          <List.Header>{author}</List.Header>
-          <List.Description>{body}</List.Description>
+
+          {editing ?
+            <Input placeholder='Body' name='body' value={body} onChange={this.handleChange} />
+            :
+            <div>
+              <List.Header>{author}</List.Header>
+              <List.Description>{body}</List.Description>
+            </div>
+          }
+
         </List.Content>
       </List.Item>
     );

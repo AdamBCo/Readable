@@ -207,7 +207,7 @@ export default function reducer(state = initialState, action = {}) {
 
     case UPDATE_COMMENT: {
 
-      let comments = state.comment.map((comment) => {
+      let comments = state.comments.map((comment) => {
         if (comment.id === action.id) {
           comment.body = action.body;
           return comment;
