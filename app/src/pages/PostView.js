@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import uuid  from 'uuid';
 import { fetchComments, postComment, loadPost } from '../redux/modules/comments';
+import { updatePost } from '../redux/modules/posts';
 import { Grid, Divider, Header, Icon, Modal, Image, Form, TextArea, Button, Input, Item, List } from 'semantic-ui-react'
 import CommentList from '../components/CommentList';
 
@@ -11,7 +12,36 @@ class PostView extends Component {
     loading: true,
     comments: null,
     error: null,
-    username: null
+    username: null,
+    editing: false,
+    title: "",
+    body: ""
+  }
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      title: this.props.title,
+      author: this.props.author,
+      body: this.props.body,
+      editing: false
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    console.log("NEXT ", nextProps);
+    if (nextProps) {
+
+      const {title, body} = nextProps;
+
+      this.setState({
+        ...this.state,
+        title,
+        body,
+        username: null,
+        comment: null
+      })
+    }
   }
 
   handleChange = (e, { name, value }) => this.setState({ [name]: value })
@@ -41,8 +71,6 @@ class PostView extends Component {
       parentId: id
     }
 
-    console.log(newComment);
-
     postComment(newComment)
 
 
@@ -54,25 +82,64 @@ class PostView extends Component {
 
   }
 
+  onEditButtonPressed = () => {
+
+    const id = this.props.match.params.id;
+    const { editing, title, body } = this.state;
+
+    if (editing) {
+      updatePost(id, title, body)
+    }
+
+    this.setState({
+      editing: !editing
+    });
+  }
+
   render() {
 
     const id = this.props.match.params.id;
-    const { title, body, comments } = this.props;
-    const { loading, comment, username} = this.state;
+    const { comments, error } = this.props;
+    const { loading, comment, username, editing, title, body} = this.state;
+
+
+    if (error) {
+      return (
+        <div>
+          404 error, no such page!
+        </div>
+      )
+    }
 
     return (
-      <div>
-        <Header as='h1'>
-          {title}
-        <Header.Subheader>{body}</Header.Subheader>
-        </Header>
-        <CommentList comments={comments} postID={id}/ >
-        <Form onSubmit={this.onSubmit}>
-          <Form.Input placeholder='Username' name='username' value={username || ""} onChange={this.handleChange} />
-          <Form.Input placeholder='Comment' name='comment' value={comment || ""} onChange={this.handleChange} />
-          <Form.Button content="Submit" />
-        </Form>
-      </div>
+      <Grid>
+        <Grid.Row>
+          <Grid.Column>
+            {editing ?
+              <Form onSubmit={this.onSubmit}>
+                <Form.Input placeholder='Title' name='title' value={title} onChange={this.handleChange} />
+                <Form.TextArea placeholder='Body' name='body' value={body} onChange={this.handleChange} />
+              </Form>
+              :
+              <Header as='h1'>
+                {title}
+              <Header.Subheader>{body}</Header.Subheader>
+              </Header>
+            }
+            <Button content={ !editing ? "Edit" : "Post" } onClick={this.onEditButtonPressed} />
+          </Grid.Column>
+        </Grid.Row>
+        <Grid.Row>
+          <Grid.Column>
+            <CommentList comments={comments} postID={id}/ >
+            <Form onSubmit={this.onSubmit}>
+              <Form.Input placeholder='Username' name='username' value={username || ""} onChange={this.handleChange} />
+              <Form.Input placeholder='Comment' name='comment' value={comment || ""} onChange={this.handleChange} />
+              <Form.Button content="Submit" />
+            </Form>
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
     );
   }
 };
@@ -89,7 +156,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     loadData: (id) => {dispatch(fetchComments(id))},
     loadPost: (id) => {dispatch(loadPost(id))},
-    postComment: (comment) => {dispatch(postComment(comment))}
+    postComment: (comment) => {dispatch(postComment(comment))},
+    updatePost: (id, title, body) => {dispatch(updatePost(id, title, body))}
   }
 }
 
@@ -97,7 +165,7 @@ PostView.propTypes = {
   title: PropTypes.string,
   body: PropTypes.string,
   comments: PropTypes.array,
-  error: PropTypes.string,
+  error: PropTypes.object,
   loading: PropTypes.bool,
   loadData: PropTypes.func.isRequired
 };

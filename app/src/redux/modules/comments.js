@@ -198,6 +198,9 @@ export default function reducer(state = initialState, action = {}) {
         error: null
       }
     case LOAD_POST_FAILURE:
+
+      console.log(action);
+      
       return {
         ...state,
         loading: false,

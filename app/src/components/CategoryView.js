@@ -21,7 +21,15 @@ class CategoryView extends Component {
   render() {
 
     const category = this.props.match.params.category;
-    const { isDataLoaded, posts } = this.props;
+    const { isDataLoaded, posts, error } = this.props;
+
+    if (error) {
+      return (
+        <div>
+          404 error, no such page!
+        </div>
+      )
+    }
 
     var filteredPosts = posts && posts.filter((post) => {
       return post.deleted === false
@@ -64,7 +72,7 @@ const mapDispatchToProps = (dispatch) => {
 
 CategoryView.propTypes = {
   posts: PropTypes.array,
-  error: PropTypes.string,
+  error: PropTypes.object,
   loading: PropTypes.bool,
   loadData: PropTypes.func.isRequired,
   isDataLoaded: PropTypes.bool.isRequired

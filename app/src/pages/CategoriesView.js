@@ -14,9 +14,6 @@ class CategoriesView extends Component {
   render() {
     return (
       <Grid>
-        <Grid.Column width={2}>
-          <CategoryList />
-        </Grid.Column>
         <Grid.Column width={13}>
           <Route exact={true} path='/' component={CategoryView} />
           <Route exact={true} path='/:category' component={CategoryView} />
